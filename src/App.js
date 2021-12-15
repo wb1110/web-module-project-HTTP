@@ -13,7 +13,6 @@ import axios from 'axios';
 const App = (props) => {
   const [movies, setMovies] = useState([]);
   const [favoriteMovies, setFavoriteMovies] = useState([]);
-  const [movie, setMovie] = useState('');
 
   useEffect(()=>{
     axios.get('http://localhost:9000/api/movies')
@@ -26,13 +25,8 @@ const App = (props) => {
   }, []);
 
   const deleteMovie = (id)=> {
-    axios.delete(`http://localhost:9000/api/movies/${id}`)
-    .then(res => {
-        setMovie(res.data);
-    })
-    .catch(err => {
-      console.log(err);
-    })
+    setMovies(movies.filter(item=>(item.id !== Number(id))))
+    console.log(movies)
   }
 
   const addToFavorites = (movie) => {
@@ -56,7 +50,7 @@ const App = (props) => {
             </Route>
 
             <Route path="/movies/:id">
-              <Movie movie={movie} setMovie={setMovie} deleteMovie={deleteMovie}/>
+              <Movie deleteMovie={deleteMovie}/>
             </Route>
 
             <Route path="/movies">

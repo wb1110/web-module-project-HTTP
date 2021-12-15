@@ -5,9 +5,7 @@ import axios from 'axios';
 
 const Movie = (props) => {
     const { addToFavorites } = props;
-    const { deleteMovie } = props;
-    // const [movie, setMovie] = useState('');
-    const { movie, setMovie } = props;
+    const [movie, setMovie] = useState('');
 
     const { id } = useParams();
     const { push } = useHistory();
@@ -22,9 +20,16 @@ const Movie = (props) => {
             })
     }, [id]);
 
-    const handleDelete = (id) => {
-        deleteMovie(id);
-        push("/movies");
+    const handleDelete = () => {
+        axios.delete(`http://localhost:9000/api/movies/${id}`)
+        .then(res => {
+            props.deleteMovie(id);
+            push("/movies");
+        })
+        .catch(err => {
+          console.log(err);
+        })
+        
     }
 
     return(<div className="modal-page col">
